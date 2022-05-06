@@ -17,14 +17,10 @@ function getPopUpAdData ($userId , $adId, $dbConnect){
                     ");
     $row = mysqli_fetch_array($adIdResults);
 
-    //echo "getPanelAdData db 연결 성공<br>";
-
     $style = $row['f_style'];
     $persona = getPersona($dbConnect, $userId);
     $categoryBig = $row['ctgr_b'];
     $categoryMid = $row['ctgr_m'];
-
-    //echo "PanelAdData 잘 왔나 확인 : ".$style.$persona.$categoryBig.$categoryMid."<br>";
 
     //2. 페르소나, 패션스타일, 광고판카테고리 고려해서 랜덤으로 광고 하나 선택하기
     // 광고판에 있던 광고의 카테고리와 다른 카테고리 선택하기
@@ -39,20 +35,16 @@ function getPopUpAdData ($userId , $adId, $dbConnect){
 
 //페르소나, 패션스타일, 광고판카테고리 고려해서 랜덤으로 광고 하나 선택해서 추출
 function getData($categoryBig,$categoryMid, $dbConnect, $style, $persona, $considerPersona){
-    //echo "페르소나 고려할까 ? : ".$considerPersona;
     $results = 1;
     switch($categoryBig){
         case "head" :
         case "man_shoes" :
         case "woman_shoes" :
-            //echo $categoryBig."으로 잘 들어왔음<br>";
             return;
         case "woman_clothes":
         case "man_clothes":
-            //echo $categoryBig."으로 잘 들어왔음<br>";
             switch($categoryMid){
                 case "top":
-                    //echo $categoryMid."으로 잘 들어왔음<br>";
                     if($considerPersona == "yes"){
                         $results = $dbConnect->query("
                     SELECT * FROM adList WHERE f_style = '{$style}' AND persona = '{$persona}' AND ctgr_b = '{$categoryBig}' AND (ctgr_m = 'outer' OR ctgr_m = 'bottom')
@@ -64,7 +56,6 @@ function getData($categoryBig,$categoryMid, $dbConnect, $style, $persona, $consi
                     }
                     break;
                 case "bottom":
-                    //echo $categoryMid."으로 잘 들어왔음<br>";
                     if($considerPersona == "yes"){
                         $results = $dbConnect->query("
                     SELECT * FROM adList WHERE f_style = '{$style}' AND persona = '{$persona}' AND ctgr_b = '{$categoryBig}' AND (ctgr_m = 'outer' OR ctgr_m = 'top')
@@ -76,7 +67,6 @@ function getData($categoryBig,$categoryMid, $dbConnect, $style, $persona, $consi
                     }
                     break;
                 case "outer":
-                    //echo $categoryMid."으로 잘 들어왔음<br>";
                     if($considerPersona == "yes"){
                         $results = $dbConnect->query("
                         SELECT * FROM adList WHERE f_style = '{$style}' AND persona = '{$persona}' AND ctgr_b = '{$categoryBig}' AND (ctgr_m = 'bottom' OR ctgr_m = 'top')
@@ -90,12 +80,10 @@ function getData($categoryBig,$categoryMid, $dbConnect, $style, $persona, $consi
             }
             break;
     }
-    //echo "광고모음에 광고 갯수는 : ".mysqli_num_rows($results)."<br>";
 
     //추출한 광고들 배열에 담아서 랜덤으로 하나를 선택한다.
     $randVal = 0;
     if(mysqli_num_rows($results) != 0){
-        //echo "광고모음 행 갯수 0 아닌 곳으로 들어옴<br>";
         //광고들 배열에 담기
         $resultsArr = array();
         $i = 0;
@@ -106,12 +94,7 @@ function getData($categoryBig,$categoryMid, $dbConnect, $style, $persona, $consi
         //랜덤 값 추출 후 랜덤광고 선택
         $randVal = rand(0, mysqli_num_rows($results) - 1);
 
-        //echo "랜덤값은 ".$randVal."<br>";
-
         $row = $resultsArr[$randVal];
-
-        //echo "추출된 광고 row의 var dump = ";
-//        var_dump($row);
 
         //추출할 데이터에 담기
         $data['adId'] = $row['idx'];
@@ -140,7 +123,6 @@ function getPanelAdData($adId,$dbConnect){
                     ");
     $row = mysqli_fetch_array($adIdResults);
 
-    //echo "getPanelAdData db 연결 성공";
     $adData['style'] = $row['f_style'];
     $adData['persona'] = $row['persona'];
     $adData['categoryBig'] = $row['ctgr_b'];
@@ -207,7 +189,7 @@ function getAdGroup($dbConnect, $persona, $category, $adPanelShape){
     }
 
     return $adGroup;
-}//여기서 광고 status도 고려해야 함, 아직 안되있음
+}
 
 function getAdGroupByPref($dbConnect, $persona, $categoryArr, $adPanelShape){
     $adGroup = array();
