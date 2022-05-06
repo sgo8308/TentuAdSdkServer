@@ -7,13 +7,10 @@ $type = $_POST['type'];
 
 $db= mysqli_connect("localhost","son","teamnova","tentuad");
 
-echo "helloguys";
-
 $persona = getPersona($db, $userId);
 
 switch ($type) {
     case "adClick":
-        echo "adclick 들어옴";
         $insert = $db->query("
                     INSERT into UserAdClick
                     (userid,ps,adid, owner_idx, isClick, actiondate)
@@ -26,7 +23,6 @@ switch ($type) {
                         ");
         break;
     case "adImpression":
-        echo "adImp 들어옴";
         $insert = $db->query("
                     INSERT into UserAdClick
                     (userid, ps, adid, owner_idx, isClick, actiondate)
@@ -41,8 +37,6 @@ switch ($type) {
         break;
 }
 
-echo "helloguys";
-
 function getPersona($dbConnect, $userId){
     $personaResults = $dbConnect->query("
                     SELECT * FROM userPersona WHERE userId = '{$userId}'
@@ -50,5 +44,4 @@ function getPersona($dbConnect, $userId){
     $row = mysqli_fetch_array($personaResults);
     return $row['persona'];
 }
-
 ?>
