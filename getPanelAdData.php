@@ -92,7 +92,7 @@ function getAdGroup($dbConnect, $persona, $category, $adPanelShape){
     }
 
     return $adGroup;
-}//여기서 광고 status도 고려해야 함, 아직 안되있음
+}
 
 function getAdGroupByPref($dbConnect, $persona, $categoryArr, $adPanelShape){
     $adGroup = array();
